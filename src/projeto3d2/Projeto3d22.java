@@ -51,8 +51,10 @@ import javax.media.j3d.PhysicalEnvironment;
 import javax.media.j3d.PointLight;
 import javax.media.j3d.PointSound;
 import javax.media.j3d.PolygonAttributes;
+import javax.media.j3d.PositionInterpolator;
 import javax.media.j3d.RenderingAttributes;
 import javax.media.j3d.RotationInterpolator;
+import javax.media.j3d.ScaleInterpolator;
 import javax.media.j3d.Screen3D;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.Sound;
@@ -337,6 +339,7 @@ public class Projeto3d22 extends Applet implements ActionListener, KeyListener, 
 		TransformGroup spinball = new TransformGroup();
 		spinball.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 		objRoot.addChild(spinball);
+		
 		// object
 		Appearance apPlaneta = createTextureAppearance();
 		Sphere sphere22 = new Sphere(0.10f, Primitive.GENERATE_TEXTURE_COORDS, 50, apPlaneta);
@@ -360,6 +363,61 @@ public class Projeto3d22 extends Applet implements ActionListener, KeyListener, 
 		Appearance BlackPlasticApp = new Appearance();
 		MyMaterial blackplastic = new MyMaterial(MyMaterial.BLACK_PLASTIC);
 		BlackPlasticApp.setMaterial(blackplastic);
+		
+		// ============= POSITION INTERPOLATOR ========================
+		TransformGroup spinball1 = new TransformGroup();
+		spinball1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+		spinball1.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+		objRoot.addChild(spinball1);
+		
+		// object
+		Appearance apPlaneta1 = createTextureAppearance();
+		Sphere sphere222 = new Sphere(0.10f, Primitive.GENERATE_TEXTURE_COORDS, 50, apPlaneta1);
+
+		Transform3D tr001 = new Transform3D();
+		tr001.set(new Vector3f(-0.4f, 1.1f, 0.0f));
+		TransformGroup tg001 = new TransformGroup(tr001);
+		tg001.addChild(sphere222);
+		
+		spinball1.addChild(tg001);
+
+		//============ INTERPOLATOR ============================
+	    Alpha alpha1 = new Alpha(-1, 6000);
+	    alpha1.setMode(Alpha.INCREASING_ENABLE | Alpha.DECREASING_ENABLE);
+	    alpha1.setDecreasingAlphaDuration(6000);
+	    PositionInterpolator translator = new PositionInterpolator(alpha1, spinball1);
+	    translator.setSchedulingBounds(bounds);
+	    translator.setEnable(true);
+	    objRoot.addChild(translator);
+	    
+	    //=========== SCALE INTERPOLATOR ======================
+	    
+	    TransformGroup box = new TransformGroup();
+	    box.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+	    box.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+	    objRoot.addChild(box);
+	    
+	    //object
+	    Appearance apBox = createTextureAppearance();
+	    Box box22 = new Box(0.1f,Primitive.GENERATE_TEXTURE_COORDS, 0.1f, apBox );
+	    
+	    Transform3D tr0 = new Transform3D();
+	    tr0.set(new Vector3f(-0.8f, 1.1f, 0.0f));
+	    tr0.setScale(0.1);
+	    TransformGroup tg0 = new TransformGroup(tr0);
+	    tg0.addChild(box22);
+	    box.addChild(tg0);
+	    
+	    //======== INTERPOLATOR =================
+	    Alpha alpha3 = new Alpha(-1, 6000);
+	    alpha3.setMode(Alpha.INCREASING_ENABLE | Alpha.DECREASING_ENABLE);
+	    alpha3.setDecreasingAlphaDuration(6000);
+	    ScaleInterpolator zoom = new ScaleInterpolator(alpha3, box);
+	    BoundingSphere bounds1 = new BoundingSphere(new Point3d(0,0,0),100);
+	    zoom.setSchedulingBounds(bounds1);
+	    zoom.setEnable(true);
+	    objRoot.addChild(zoom);
+	    
 		
 		//=======  SHAPE INDEXEDLINEARRAY =========================
 		
@@ -520,12 +578,35 @@ public class Projeto3d22 extends Applet implements ActionListener, KeyListener, 
 		objRoot.addChild(mb);
 		
 		//============= TEXT 3D ============================
-    	Appearance text3dap = new Appearance();
-    	text3dap.setMaterial(new Material());
+    	Appearance text3dap1 = new Appearance();
+    	MyMaterial whitePlastic = new MyMaterial(MyMaterial.WHITE_PLASTIC);
+    	text3dap1.setMaterial(whitePlastic);
+    	
+    	Appearance text3dap2 = new Appearance ();
+    	MyMaterial wallapp = new MyMaterial(MyMaterial.WALL);
+    	text3dap2.setMaterial(wallapp);
+    	
+    	Appearance text3dap3 = new Appearance();
+    	MyMaterial orangeapp = new MyMaterial(MyMaterial.ORANGE);
+    	text3dap3.setMaterial(orangeapp);
+    	
+    	Appearance text3dap4 = new Appearance();
+    	MyMaterial gouradapp = new MyMaterial(MyMaterial.GOURAUD);
+    	text3dap4.setMaterial(gouradapp);
+    	
+    	Appearance text3dap5 = new Appearance();
+    	MyMaterial redapp = new MyMaterial(MyMaterial.RED);
+    	text3dap5.setMaterial(redapp);
+    	
+    	Appearance text3dap6 = new Appearance();
+    	MyMaterial plasticapp = new MyMaterial(MyMaterial.PLASTIC);
+    	text3dap6.setMaterial(plasticapp);
+    	
+    	
     	Font3D font = new Font3D(new Font("SansSerif", Font.PLAIN, 1), new FontExtrusion());
     	Font3D font1 = new Font3D(new Font("Arial", Font.PLAIN, 1), new FontExtrusion());
     	Text3D text = new Text3D(font, "PROJETO 3D");
-    	Shape3D shape3dtext = new Shape3D(text, text3dap);
+    	Shape3D shape3dtext = new Shape3D(text, text3dap1);
     	Transform3D textt = new Transform3D();
     	textt.setScale(0.2);
     	textt.setTranslation(new Vector3f(-0.6f, 0.28f, 0f));
@@ -533,6 +614,8 @@ public class Projeto3d22 extends Applet implements ActionListener, KeyListener, 
     	objRoot.addChild(ttext);
     	ttext.addChild(shape3dtext);
     	
+    	Appearance text3dap = new Appearance();
+    	text3dap.setMaterial(new Material());
     	Text3D text1 = new Text3D(font, "Billboard");
     	Shape3D shape3dtext1 = new Shape3D(text1, text3dap);
     	Transform3D text1tr = new Transform3D();
@@ -543,7 +626,7 @@ public class Projeto3d22 extends Applet implements ActionListener, KeyListener, 
     	texttt.addChild(shape3dtext1);
     	
     	Text3D text2 = new Text3D(font, "LOD");
-    	Shape3D shape3dtext2 = new Shape3D(text2, text3dap);
+    	Shape3D shape3dtext2 = new Shape3D(text2, text3dap2);
     	Transform3D text2tr = new Transform3D();
     	text2tr.setScale(0.05);
     	text2tr.setTranslation(new Vector3f(-0.85f, -0.05f, 0f));
@@ -552,7 +635,7 @@ public class Projeto3d22 extends Applet implements ActionListener, KeyListener, 
     	textttt.addChild(shape3dtext2);
     	
     	Text3D text3 = new Text3D(font, "Morph");
-    	Shape3D shape3dtext3 = new Shape3D(text3, text3dap);
+    	Shape3D shape3dtext3 = new Shape3D(text3, text3dap3);
     	Transform3D text3tr = new Transform3D();
     	text3tr.setScale(0.05);
     	text3tr.setTranslation(new Vector3f(0.77f, 0.35f, 0f));
@@ -561,7 +644,7 @@ public class Projeto3d22 extends Applet implements ActionListener, KeyListener, 
     	text33.addChild(shape3dtext3);
     	
     	Text3D text12 = new Text3D(font1 , "Indexed ");
-    	Shape3D shape3dtext4 = new Shape3D(text12, text3dap);
+    	Shape3D shape3dtext4 = new Shape3D(text12, text3dap4);
     	Transform3D tex4tr = new Transform3D();
     	tex4tr.setScale(0.05);
     	tex4tr.setTranslation(new Vector3f(0.75f, 0.05f, 0f));
@@ -570,7 +653,7 @@ public class Projeto3d22 extends Applet implements ActionListener, KeyListener, 
     	text44.addChild(shape3dtext4);
     	
     	Text3D text22 = new Text3D(font1, "Custom");
-    	Shape3D shape3dtext5 = new Shape3D(text22, text3dap);
+    	Shape3D shape3dtext5 = new Shape3D(text22, text3dap5);
     	Transform3D text5tr = new Transform3D();
     	text5tr.setScale(0.05);
     	text5tr.setTranslation(new Vector3f(0.8f, -0.22f, 0f));
@@ -588,13 +671,31 @@ public class Projeto3d22 extends Applet implements ActionListener, KeyListener, 
     	text66.addChild(shape3dtext6);
     	
     	Text3D text444 = new Text3D(font, "Rotation Interpolator");
-    	Shape3D shape3dtext444 = new Shape3D(text444, text3dap);
+    	Shape3D shape3dtext444 = new Shape3D(text444, text3dap6);
     	Transform3D text7tr = new Transform3D();
     	text7tr.setScale(0.05);
     	text7tr.setTranslation(new Vector3f(0.23f, 0.55f, 0f));
     	TransformGroup text77 = new TransformGroup(text7tr);
     	objRoot.addChild(text77);
     	text77.addChild(shape3dtext444);
+    	
+    	Text3D text555 = new Text3D(font, "Position Interpolator");
+    	Shape3D shape3dtext555 = new Shape3D(text555, text3dap);
+    	Transform3D text8tr= new Transform3D();
+    	text8tr.setScale(0.05);
+    	text8tr.setTranslation(new Vector3f(-0.2f, 0.9f, 0f));
+    	TransformGroup text88 = new TransformGroup(text8tr);
+    	objRoot.addChild(text88);
+    	text88.addChild(shape3dtext555);
+    	
+    	Text3D text666 = new Text3D(font, "Scale Interpolator");
+    	Shape3D shape3dtext666 = new Shape3D(text666, text3dap);
+    	Transform3D text9tr= new Transform3D();
+    	text9tr.setScale(0.05);
+    	text9tr.setTranslation(new Vector3f(-1f, 0.8f, 0f));
+    	TransformGroup text99 = new TransformGroup(text9tr);
+    	objRoot.addChild(text99);
+    	text99.addChild(shape3dtext666);
     	
     	//======= PICKING PERMISSIONS =============================
     	ttext.setCapability(TransformGroup.ENABLE_PICK_REPORTING);
@@ -644,7 +745,7 @@ public class Projeto3d22 extends Applet implements ActionListener, KeyListener, 
         this.drawSkyEffects();
         this.buildObstacles();
         
-        BoundingSphere bounds3 = new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0);
+        BoundingSphere bounds3 = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),50);
         Color3f light1Color = new Color3f(Color.white);
         Vector3f light1Direction = new Vector3f(0.0f, -7.0f, -10.0f);
 
@@ -660,7 +761,7 @@ public class Projeto3d22 extends Applet implements ActionListener, KeyListener, 
         objRoot.addChild(ambientLightNode);
 
         //============= POINT LIGHT ======================== 
-        pLight = new PointLight(new Color3f(Color.RED), new Point3f(3f, 3f, 3f), new Point3f(1f, 0f, 0f));
+        pLight = new PointLight(new Color3f(Color.ORANGE), new Point3f(3f, 3f, 3f), new Point3f(1f, 0f, 0f));
 		pLight.setCapability(PointLight.ALLOW_STATE_READ);
 		pLight.setCapability(PointLight.ALLOW_STATE_WRITE);
 		pLight.setInfluencingBounds(bounds3);
@@ -804,7 +905,7 @@ public class Projeto3d22 extends Applet implements ActionListener, KeyListener, 
 		return appear;
 	}
     
-		// ========= MORPH =============================
+		// ========= MORPHS =============================
 		GeometryArray morph1() {
 			IndexedTriangleArray iaa = new IndexedTriangleArray(6, GeometryArray.COORDINATES, 24);
 			Point3f[] coords = new Point3f[6];
@@ -889,6 +990,7 @@ public class Projeto3d22 extends Applet implements ActionListener, KeyListener, 
 			return geom.getGeometryArray();
 		}
 		
+		//============ TEXTURE2D APPEARANCE ==================== 
 		Appearance createTextureAppearance() {
 			Appearance ap = new Appearance();
 			URL filename = getClass().getClassLoader().getResource("images/image.jpg");
@@ -939,8 +1041,8 @@ public class Projeto3d22 extends Applet implements ActionListener, KeyListener, 
         }
       }
     
+    @Override
     public void keyPressed(KeyEvent e) {
-    	System.out.println("xo");
         if (e.getKeyChar() == 'd') {
             sign = 1;
         }
@@ -948,7 +1050,7 @@ public class Projeto3d22 extends Applet implements ActionListener, KeyListener, 
             sign = -1;
         }
     }
-
+    @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyChar() == 'd') {
             sign = 0;
