@@ -1,27 +1,15 @@
-# GraphicsComputation3D_Java
+# Computer Graphics — Java3D
 
-Game developed for Graphics Computation course using Java and Java3D API.
+My Java3D coursework, with examples of shapes, materials, morphing, and imported OBJ models.
 
-## Technologies
-- Java
-- Java3D API
-- Eclipse IDE
+## Files
 
-## Features
-- 3D graphics rendering
-- Camera controls
-- Object transformations
-- Lighting system
-- 3D collision detection
+- `src/projeto3d2/` — scene code and behaviours
+- `src/shapes/` — geometry examples
+- `src/appearance/` — material code
+- `obj/` — OBJ models
+- `src/images/` — course material and other assets
 
-## Setup
-1. Install Java + Java3D
-2. Clone repository 
-3. Open in Eclipse
-4. Run Main.java
+## Open the project
 
-## License
-MIT
-
-## Author
-[Your Name]
+Configure Java3D in your Java IDE and run `src/projeto3d2/Projeto3d22.java`. Keep the model and asset paths available when running the scene.
